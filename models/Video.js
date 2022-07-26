@@ -16,6 +16,14 @@ const videoSchema = new mongoose.Schema(
     video:{
         type:String,
         default: 'add later'
+    },
+    thumbnail:{
+        type: String,
+        default: 'iama thumbnail'
+    },
+    category:{
+        type: String,
+        required: [true, 'Please enter a category']
     }
   },
   {

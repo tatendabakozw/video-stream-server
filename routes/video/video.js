@@ -5,12 +5,14 @@ const {
   editAVideo,
   deleteAVideo,
 } = require("../../controllers/videoController");
+const upload = require("../../helpers/multer");
+const { requireUserSignIn } = require("../../middleware/auth");
 const router = express.Router();
 
 // create a video
 // /api/post/video/create
 // post request
-router.post("/create", createAVideo);
+router.post("/create",requireUserSignIn, upload.array("product_pictures"), createAVideo);
 
 // get all videos
 // /api/post/video/explore
