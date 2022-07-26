@@ -8,6 +8,14 @@ const connectDB = require("./utils/mongo");
 
 const PORT = process.env.PORT || 5500;
 
+
+// a server for socket io
+var server = require('http').createServer(app);
+const socketio = require("socket.io");
+const WebSockets = require("./helpers/WebSockets");
+global.io = socketio(server);
+global.io.on('connection', WebSockets.connection)
+
 // app level middleware
 app.use(cors({ origin: "*" }));
 app.use(express.json());
@@ -21,6 +29,7 @@ connectDB();
 // user defined routes
 app.use("/api/auth", require("./routes/auth/auth"));
 app.use('/api/video', require('./routes/video/video'))
+app.use('/api/comment', require('./routes//comment/comment'))
 
 //not found handler
 app.use((req, res, next) => {
@@ -51,7 +60,7 @@ app.get("/", (req, res) => {
 });
 
 // listener
-app.listen(PORT, (err) => {
+server.listen(PORT, (err) => {
   if (err) {
     console.error(`${err}`);
   }
