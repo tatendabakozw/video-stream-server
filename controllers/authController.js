@@ -22,6 +22,14 @@ exports.registerUser = async (req, res) => {
     return res.status(401).send({ message: "Invalid password" });
   }
 
+  const user = await User.findOne({email: email})
+
+  if(user){
+    return res
+    .status(401)
+    .send({ message: "User already exists" });
+  }
+
   try {
     const new_password = await bcrypt.hashSync(password, 12);
     //create new user object
@@ -63,7 +71,7 @@ exports.loginUser = async (req, res) => {
     if (password_correct) {
       const token = await jwt.sign(
         {
-          name: _user.name,
+          name: _user.username,
           email: _user.email,
           _id: _user._id,
           role: _user.role,
@@ -74,7 +82,7 @@ exports.loginUser = async (req, res) => {
       );
       if (token) {
         const user = {
-          name: _user.name,
+          name: _user.username,
           email: _user.email,
           _id: _user._id,
           role: _user.role,
