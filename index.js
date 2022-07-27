@@ -29,7 +29,8 @@ connectDB();
 // user defined routes
 app.use("/api/auth", require("./routes/auth/auth"));
 app.use('/api/video', require('./routes/video/video'))
-app.use('/api/comment', require('./routes//comment/comment'))
+app.use('/api/comment', require('./routes/comment/comment'))
+app.use('/api/like', require('./routes/like/like'))
 
 //not found handler
 app.use((req, res, next) => {

@@ -137,6 +137,25 @@ exports.getAllVideos = async (req, res) => {
   }
 };
 
+// get a single video
+exports.getSingleVideo = async (req, res) => {
+  try {
+    const { videoId } = req.query;
+    const video = await Video.findOne({ _id: videoId });
+
+    console.log(videoId)
+
+    // increase number of views by 1
+    await Video.findOneAndUpdate(
+      { _id: videoId },
+      { $inc: { 'numberOfViews': 1 }}
+    );
+    return res.status(200).send({ video: video });
+  } catch (error) {
+    return res.status(500).send({ message: `${error}` });
+  }
+};
+
 // edit video
 // /api/post/video/edit/{videoId}
 // put request
