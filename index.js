@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+app.use(cors());
 require("dotenv").config();
 const morgan = require("morgan");
 const helmet = require("helmet");
@@ -17,7 +18,6 @@ global.io = socketio(server);
 global.io.on('connection', WebSockets.connection)
 
 // app level middleware
-app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("common"));
