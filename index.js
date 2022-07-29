@@ -26,6 +26,13 @@ app.use(helmet());
 // connect databse
 connectDB();
 
+// home
+app.get("/", (req, res) => {
+  res.send({
+    message: "Api for NSFW app",
+  });
+});
+
 // user defined routes
 app.use("/api/auth", require("./routes/auth/auth"));
 app.use('/api/video', require('./routes/video/video'))
@@ -54,12 +61,7 @@ app.use((error, req, res, next) => {
   });
 });
 
-// home
-app.get("/", (req, res) => {
-  res.send({
-    message: "Api for NSFW app",
-  });
-});
+
 
 // listener
 server.listen(PORT, (err) => {
