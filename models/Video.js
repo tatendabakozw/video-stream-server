@@ -15,11 +15,11 @@ const videoSchema = new mongoose.Schema(
     },
     video: {
       type: String,
-      default: "add later",
+      default: "",
     },
     thumbnail: {
       type: String,
-      default: "iama thumbnail",
+      default: "",
     },
     category: {
       type: String,

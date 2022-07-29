@@ -13,7 +13,7 @@ const router = express.Router();
 // create a video
 // /api/post/video/create
 // post request
-router.post("/create",requireUserSignIn, upload.array("product_pictures"), createAVideo);
+router.post("/create",requireUserSignIn, upload.array("thumbnail_picture"), createAVideo);
 
 // get all videos
 // /api/post/video/explore
