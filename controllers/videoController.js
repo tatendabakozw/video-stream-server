@@ -6,60 +6,36 @@ const fs = require('fs')
 // /api/post/video/create
 // post request
 exports.createAVideo = async (req, res) => {
-  // console.log("create a video");
-  // const { title, description, category, video_url } = req.body;
-  // const _user = req.user;
-  // // url to hold the image
-  // const urls = [];
+  const { title, description, category, video_url, picture_url } = req.body;
+  const _user = req.user;
+  // url to hold the image
+  if (!title) {
+    return res.status(401).send({ message: "Please enter a title" });
+  }
+  if (!description) {
+    return res.status(401).send({ message: "Please enter a description" });
+  }
+  if (!video_url) {
+    return res.status(401).send({ message: "Please enter a video" });
+  }
+  try {
+   
 
-  // if (req.files.length < 1) {
-  //   return res.status(401).send({ message: "Please select a thumbnail" });
-  // }
-  // if (!title) {
-  //   return res.status(401).send({ message: "Please enter a title" });
-  // }
-  // if (!description) {
-  //   return res.status(401).send({ message: "Please enter a description" });
-  // }
-  // if (!video_url) {
-  //   return res.status(401).send({ message: "Please enter a video" });
-  // }
-  // try {
-  //   // check if picture has been changed
-  //   if (req.files.length > 0) {
-  //     // upload images to cloudinary
-  //     const uploader = async (path) =>
-  //       cloudinary.upload(path, "Thumbail Images");
-  //     const files = req.files;
-  //     for (const file of files) {
-  //       const { path } = file;
-  //       try {
-  //         const newPath = await uploader(path);
-  //         urls.push(newPath);
-  //         fs.unlinkSync(path);
-  //         console.log("image uploaded");
-  //       } catch (error) {
-  //         res.status(500).send({ message: `Error uploading images ${error}` });
-  //       }
-  //     }
-  //   }
-
-  //   const newVideo = new Video({
-  //     title: title,
-  //     description: description,
-  //     category: category,
-  //     author: _user._id,
-  //     video: video_url,
-  //     thumbnail: urls[0],
-  //   });
-  //   const saved_video = await newVideo.save();
-  //   return res
-  //     .status(200)
-  //     .send({ message: "Video uploaded succesfully", video: saved_video });
-  // } catch (error) {
-  //   return res.status(500).send({ message: `${error}` });
-  // }
-  return res.status({message: 'success'})
+    const newVideo = new Video({
+      title: title,
+      description: description,
+      category: category,
+      author: _user._id,
+      video: video_url,
+      thumbnail: picture_url,
+    });
+    const saved_video = await newVideo.save();
+    return res
+      .status(200)
+      .send({ message: "Video uploaded succesfully", video: saved_video });
+  } catch (error) {
+    return res.status(500).send({ message: `${error}` });
+  }
 };
 
 // get all videos
