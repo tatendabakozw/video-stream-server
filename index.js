@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-app.use(cors());
 require("dotenv").config();
 const morgan = require("morgan");
 const helmet = require("helmet");
@@ -9,6 +8,14 @@ const connectDB = require("./utils/mongo");
 
 const PORT = process.env.PORT || 5500;
 
+const corsOptions ={
+  origin:'*', 
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200,
+}
+
+
+app.use(cors(corsOptions)) 
 
 // a server for socket io
 var server = require('http').createServer(app);
