@@ -1,6 +1,7 @@
 const express = require("express");
 const { requireUserSignIn } = require("../../middleware/auth");
 const Comment = require("../../models/Comment");
+const Video = require("../../models/Video");
 const router = express.Router();
 
 // create a comment
@@ -19,6 +20,10 @@ router.post("/create", requireUserSignIn, async (req, res) => {
       sentFromId: _user._id,
     });
     const saved_comment = await newComment.save();
+    await Video.findOneAndUpdate(
+      { _id: videoId },
+      { $inc: { 'numberOfComments': 1 } }
+    );
     global.io.sockets.emit("comment", saved_comment);
     return res
       .status(200)
