@@ -34,6 +34,7 @@ exports.createAVideo = async (req, res) => {
       .status(200)
       .send({ message: "Video uploaded succesfully", video: saved_video });
   } catch (error) {
+    console.log(`${error}`)
     return res.status(500).send({ message: `${error}` });
   }
 };
