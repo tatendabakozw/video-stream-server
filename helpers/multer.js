@@ -14,12 +14,12 @@ const storage = multer.diskStorage({
 
 // reject unsupported images
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+  // if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
     cb(null, true)
-  } else {
-    //reject file
-    cb({ message: 'Unsupported file format' }, false)
-  }
+  // } else {
+  //   //reject file
+  //   cb({ message: 'Unsupported file format' }, false)
+  // }
 }
 
 // actual thing to be called when uploading the images
