@@ -46,6 +46,8 @@ app.use('/api/video', require('./routes/video/video'))
 app.use('/api/comment', require('./routes/comment/comment'))
 app.use('/api/like', require('./routes/like/like'))
 app.use('/api/subscribe', require('./routes/subscriber/subscriber'))
+app.use('/api/chat', require('./routes/chat/chat'))
+app.use('/api/report', require('./routes/report/report'))
 
 //not found handler
 app.use((req, res, next) => {

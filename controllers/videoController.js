@@ -1,6 +1,4 @@
 const Video = require("../models/Video");
-const cloudinary = require("../helpers/cloudinary");
-const fs = require('fs')
 
 // create a video
 // /api/post/video/create
