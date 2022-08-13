@@ -36,6 +36,14 @@ const videoSchema = new mongoose.Schema(
     numberOfComments:{
       type:Number, 
       default: 0
+    },
+    tags:{
+      type: Array,
+    },
+    status:{
+      type: String,
+      enum:['public', 'private'],
+      default: 'public'
     }
   },
   {
