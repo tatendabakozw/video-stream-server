@@ -12,14 +12,14 @@ router.post("/create", requireUserSignIn, async (req, res) => {
     return res.status(403).send({ message: "Please sign in" });
   }
   try {
-    const { user, video, report } = req.body;
+    const { video, report } = req.body;
 
     if (!report) {
       return res.status(400).send({ message: "Please send a report" });
     }
 
     const newReport = new Report({
-      user: user,
+      user: _user._id,
       video: video,
       report: report,
     });
