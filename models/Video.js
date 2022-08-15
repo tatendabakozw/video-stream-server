@@ -44,6 +44,10 @@ const videoSchema = new mongoose.Schema(
       type: String,
       enum:['public', 'private'],
       default: 'public'
+    },
+    duration:{
+      type:String,
+      default: ''
     }
   },
   {

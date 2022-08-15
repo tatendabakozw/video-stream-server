@@ -4,7 +4,7 @@ const Video = require("../models/Video");
 // /api/post/video/create
 // post request
 exports.createAVideo = async (req, res) => {
-  const { title, description, category, video_url, picture_url, tags } = req.body;
+  const { title, description, category, video_url, picture_url, tags, duration } = req.body;
   const _user = req.user;
   // url to hold the image
   if (!title) {
@@ -26,7 +26,8 @@ exports.createAVideo = async (req, res) => {
       author: _user._id,
       video: video_url,
       thumbnail: picture_url,
-      tags: tags
+      tags: tags,
+      duration: duration
     });
     const saved_video = await newVideo.save();
     return res
