@@ -4,7 +4,7 @@ const Video = require("../models/Video");
 // /api/post/video/create
 // post request
 exports.createAVideo = async (req, res) => {
-  const { title, description, category, video_url, picture_url, tags, duration } = req.body;
+  const { title, description, category, video_url, picture_url, tags, duration, status } = req.body;
   const _user = req.user;
   // url to hold the image
   if (!title) {
@@ -27,7 +27,8 @@ exports.createAVideo = async (req, res) => {
       video: video_url,
       thumbnail: picture_url,
       tags: tags,
-      duration: duration
+      duration: duration,
+      status: status
     });
     const saved_video = await newVideo.save();
     return res
@@ -56,6 +57,13 @@ exports.getAllVideos = async (req, res) => {
       },
       { $unwind: "$creator" },
     ];
+
+    query.push({
+      $match: {
+        status: 'public',
+      },
+    });
+
     // handling search queries
     if (req.query.keyword && req.query.keyword != "") {
       query.push({
