@@ -143,6 +143,7 @@ exports.getAllVideos = async (req, res) => {
       });
     }
 
+
     let videos = await Video.aggregate(query);
 
     return res.status(200).send({
@@ -209,8 +210,14 @@ exports.editAVideo = async (req, res) => {
 };
 
 // delete a video
-// /api/post/video/delete/{videoId}
+// /api/video/delete/{videoId}
 // delete request
 exports.deleteAVideo = async (req, res) => {
-  console.log("delete a video");
+  const {id} = req.params
+  try {
+    await Video.findOneAndRemove({_id: id})
+    return res.status(200).send({message: 'Video deleted successfully!'})
+  } catch (error) {
+    return res.status(500).send({message: `${error}`})
+  } 
 };
