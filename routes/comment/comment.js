@@ -24,10 +24,39 @@ router.post("/create", requireUserSignIn, async (req, res) => {
       { _id: videoId },
       { $inc: { 'numberOfComments': 1 } }
     );
+    let query = [
+      {
+        $lookup: {
+          from: "users",
+          let: { user: "sentFromId" },
+          pipeline: [{ $limit: 1 }],
+          as: "creator",
+        },
+      },
+      { $unwind: "$creator" },
+    ];
+    query.push({
+      $match: {
+        _id: saved_comment._id,
+      },
+    });
+    // exclude some fields
+    query.push({
+      //@ts-ignore
+      $project: {
+        "creator.password": 0,
+      },
+    });
+    const new_comment = await Comment.aggregate(query)
+    console.log(new_comment)
     global.io.sockets.emit("comment", saved_comment);
     return res
       .status(200)
-      .send({ message: "Comment saved", comment: saved_comment });
+      .send({
+        message: "Comment Saved",
+        comment: new_comment,
+      });
+
   } catch (error) {
     return res.status(500).send({ message: `${error}` });
   }

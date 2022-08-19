@@ -4,7 +4,16 @@ const Video = require("../models/Video");
 // /api/post/video/create
 // post request
 exports.createAVideo = async (req, res) => {
-  const { title, description, category, video_url, picture_url, tags, duration, status } = req.body;
+  const {
+    title,
+    description,
+    category,
+    video_url,
+    picture_url,
+    tags,
+    duration,
+    status,
+  } = req.body;
   const _user = req.user;
   // url to hold the image
   if (!title) {
@@ -17,8 +26,6 @@ exports.createAVideo = async (req, res) => {
     return res.status(401).send({ message: "Please enter a video" });
   }
   try {
-   
-
     const newVideo = new Video({
       title: title,
       description: description,
@@ -28,14 +35,14 @@ exports.createAVideo = async (req, res) => {
       thumbnail: picture_url,
       tags: tags,
       duration: duration,
-      status: status
+      status: status,
     });
     const saved_video = await newVideo.save();
     return res
       .status(200)
       .send({ message: "Video uploaded succesfully", video: saved_video });
   } catch (error) {
-    console.log(`${error}`)
+    console.log(`${error}`);
     return res.status(500).send({ message: `${error}` });
   }
 };
@@ -60,7 +67,7 @@ exports.getAllVideos = async (req, res) => {
 
     query.push({
       $match: {
-        status: 'public',
+        status: "public",
       },
     });
 
@@ -176,8 +183,29 @@ exports.getSingleVideo = async (req, res) => {
 // edit video
 // /api/post/video/edit/{videoId}
 // put request
+// required login
 exports.editAVideo = async (req, res) => {
-  console.log("edit a video");
+  try {
+    const { id } = req.params;
+    const { title, description, status, thumbnail, category } = req.body;
+
+    const _user = req.user;
+    const video = await Video.findOne({ _id: id });
+
+    if (_user._id === video.author) {
+      video.title = title;
+      video.description = description;
+      video.status = status;
+      video.thumbnail = thumbnail;
+      video.category = category;
+    } else {
+      return res
+        .status(403)
+        .send({ message: "You are not allowed to edit document" });
+    }
+  } catch (error) {
+    return res.status(500).send({ message: `${error}` });
+  }
 };
 
 // delete a video
