@@ -6,7 +6,6 @@ const {
   deleteAVideo,
   getSingleVideo,
 } = require("../../controllers/videoController");
-const upload = require("../../helpers/multer");
 const { requireUserSignIn } = require("../../middleware/auth");
 const router = express.Router();
 
@@ -26,9 +25,9 @@ router.get("/explore", getAllVideos);
 router.get('/single', getSingleVideo)
 
 // edit video
-// /api/post/video/edit/{videoId}
+// /api/video/edit/{videoId}
 // put request
-router.put("/edit/:id", editAVideo);
+router.put("/edit/:id",requireUserSignIn, editAVideo);
 
 // delete a video
 // /api/post/video/delete/{videoId}

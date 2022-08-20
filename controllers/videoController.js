@@ -192,7 +192,7 @@ exports.getSingleVideo = async (req, res) => {
 };
 
 // edit video
-// /api/post/video/edit/{videoId}
+// /api/video/edit/{videoId}
 // put request
 // required login
 exports.editAVideo = async (req, res) => {
@@ -209,6 +209,9 @@ exports.editAVideo = async (req, res) => {
       video.status = status;
       video.thumbnail = thumbnail;
       video.category = category;
+
+      await video.save()
+      return res.status(200).send({message: 'Video Saved!'})
     } else {
       return res
         .status(403)
