@@ -76,6 +76,7 @@ exports.loginUser = async (req, res) => {
           _id: _user._id,
           role: _user.role,
           emailVerified: _user.emailApproved,
+          photoURL: _user.photoURL
           //@ts-ignore
         },
         process.env.JWT_SECRET
@@ -88,6 +89,7 @@ exports.loginUser = async (req, res) => {
           role: _user.role,
           emailVerified: _user.emailApproved,
           token: token,
+          photoURL: _user.photoURL
         };
 
         return res.send({ ...user, message: "logged in sucessfully" });
