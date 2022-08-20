@@ -1,3 +1,4 @@
+const User = require("../models/User");
 const Video = require("../models/Video");
 
 // create a video
@@ -168,14 +169,23 @@ exports.getSingleVideo = async (req, res) => {
     const { videoId } = req.query;
     const video = await Video.findOne({ _id: videoId });
 
-    console.log(videoId);
-
     // increase number of views by 1
     await Video.findOneAndUpdate(
       { _id: videoId },
       { $inc: { numberOfViews: 1 } }
     );
-    return res.status(200).send({ video: video });
+
+    const creator = await User.findOne({_id: video.author})
+
+    console.log(creator)
+
+    return res.status(200).send({ video: video, creator: {
+      username: creator.username,
+      pro_pic: creator.photoURL,
+      user_id: creator._id,
+      createdAt: creator.createdAt
+    } });
+
   } catch (error) {
     return res.status(500).send({ message: `${error}` });
   }

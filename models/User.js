@@ -31,7 +31,8 @@ const userSchema = new mongoose.Schema(
     photoURL: {
       type:String, 
       default: ''
-    }
+    },
+    chatrooms: Array,
   },
   {
     timestamps: true,
