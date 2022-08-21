@@ -26,7 +26,7 @@ global.io.on('connection', WebSockets.connection)
 
 // app level middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }))
 app.use(morgan("common"));
 app.use(helmet());
 
@@ -49,6 +49,7 @@ app.use('/api/subscribe', require('./routes/subscriber/subscriber'))
 app.use('/api/chat', require('./routes/chat/chat'))
 app.use('/api/report', require('./routes/report/report'))
 app.use('/api/user', require('./routes/user/user'))
+app.use('/api/channel', require('./routes/channel/channel'))
 
 //not found handler
 app.use((req, res, next) => {
