@@ -102,14 +102,6 @@ exports.getAllVideos = async (req, res) => {
       });
     }
 
-    // handling pagination
-    let total = await Video.countDocuments(query);
-    //@ts-ignore
-    let page = req.query.page ? parseInt(req.query.page) : 1;
-    //@ts-ignore
-    let perPage = req.query.perPage ? parseInt(req.query.perPage) : 16;
-    let skip = (page - 1) * perPage;
-
     query.push({
       //@ts-ignore
       $skip: skip,
@@ -144,6 +136,13 @@ exports.getAllVideos = async (req, res) => {
       });
     }
 
+    // handling pagination
+    let total = await Video.countDocuments(query);
+    //@ts-ignore
+    let page = req.query.page ? parseInt(req.query.page) : 1;
+    //@ts-ignore
+    let perPage = req.query.perPage ? parseInt(req.query.perPage) : 16;
+    let skip = (page - 1) * perPage;
 
     let videos = await Video.aggregate(query);
 
@@ -175,17 +174,19 @@ exports.getSingleVideo = async (req, res) => {
       { $inc: { numberOfViews: 1 } }
     );
 
-    const creator = await User.findOne({_id: video.author})
+    const creator = await User.findOne({ _id: video.author });
 
-    console.log(creator)
+    console.log(creator);
 
-    return res.status(200).send({ video: video, creator: {
-      username: creator.username,
-      pro_pic: creator.photoURL,
-      user_id: creator._id,
-      createdAt: creator.createdAt
-    } });
-
+    return res.status(200).send({
+      video: video,
+      creator: {
+        username: creator.username,
+        pro_pic: creator.photoURL,
+        user_id: creator._id,
+        createdAt: creator.createdAt,
+      },
+    });
   } catch (error) {
     return res.status(500).send({ message: `${error}` });
   }
@@ -210,8 +211,8 @@ exports.editAVideo = async (req, res) => {
       video.thumbnail = thumbnail;
       video.category = category;
 
-      await video.save()
-      return res.status(200).send({message: 'Video Saved!'})
+      await video.save();
+      return res.status(200).send({ message: "Video Saved!" });
     } else {
       return res
         .status(403)
@@ -226,11 +227,11 @@ exports.editAVideo = async (req, res) => {
 // /api/video/delete/{videoId}
 // delete request
 exports.deleteAVideo = async (req, res) => {
-  const {id} = req.params
+  const { id } = req.params;
   try {
-    await Video.findOneAndRemove({_id: id})
-    return res.status(200).send({message: 'Video deleted successfully!'})
+    await Video.findOneAndRemove({ _id: id });
+    return res.status(200).send({ message: "Video deleted successfully!" });
   } catch (error) {
-    return res.status(500).send({message: `${error}`})
-  } 
+    return res.status(500).send({ message: `${error}` });
+  }
 };
