@@ -102,15 +102,7 @@ exports.getAllVideos = async (req, res) => {
       });
     }
 
-    query.push({
-      //@ts-ignore
-      $skip: skip,
-    });
-    query.push({
-      //@ts-ignore
-      $limit: perPage,
-    });
-
+    
     // exclude some fields
     query.push({
       //@ts-ignore
@@ -143,6 +135,16 @@ exports.getAllVideos = async (req, res) => {
     //@ts-ignore
     let perPage = req.query.perPage ? parseInt(req.query.perPage) : 16;
     let skip = (page - 1) * perPage;
+
+    query.push({
+      //@ts-ignore
+      $skip: skip,
+    });
+    query.push({
+      //@ts-ignore
+      $limit: perPage,
+    });
+
 
     let videos = await Video.aggregate(query);
 
