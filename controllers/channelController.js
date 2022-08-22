@@ -107,7 +107,9 @@ exports.getSingleChannelVideos = async (req,res) =>{
         videos: videos,
         channel_info :{
             username: channel_info.username,
-            photoURL: channel_info.photoURL
+            photoURL: channel_info.photoURL,
+            country: channel_info.country,
+            gender: channel_info.gender
         }
       });
     } catch (error) {
