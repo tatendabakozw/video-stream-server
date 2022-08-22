@@ -9,7 +9,14 @@ const Video = require("../models/Video");
 exports.editUserInfo = async (req, res, next) => {
   try {
     // get iformation from client
-    const { username, old_password, new_password, picture_url } = req.body;
+    const {
+      username,
+      old_password,
+      new_password,
+      picture_url,
+      gender,
+      country,
+    } = req.body;
 
     // find if user exists in database
     const { id } = req.params;
@@ -36,10 +43,11 @@ exports.editUserInfo = async (req, res, next) => {
         );
         // if password decrypted set the new password
         if (password_correct) {
-          
           user.password = bcrypt.hashSync(new_password, 12);
           user.username = username;
           user.photoURL = picture_url;
+          user.gender = gender;
+          user.country = country;
           await user.save();
           return res.status(200).send({ message: "Account has been updated" });
         } else {
@@ -55,6 +63,8 @@ exports.editUserInfo = async (req, res, next) => {
 
     user.photoURL = picture_url;
     user.username = username;
+    user.gender = gender;
+    user.country = country;
 
     await user.save();
     return res.status(200).send({ message: "Information saved" });
@@ -200,6 +210,9 @@ exports.getUserInfo = async (req, res) => {
         username: user_info.username,
         createdAt: user_info.createdAt,
         email: user_info.email,
+        gender: user_info.gender,
+        country:user_info.country,
+        photoURL: user_info.photoURL
       },
     });
   } catch (error) {

@@ -33,6 +33,12 @@ const userSchema = new mongoose.Schema(
       default: ''
     },
     chatrooms: Array,
+    country:{
+      type: String
+    },
+    gender:{
+      type: String
+    }
   },
   {
     timestamps: true,
