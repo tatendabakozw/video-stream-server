@@ -30,8 +30,8 @@ router.delete("/delete", requireUserSignIn, async (req, res, next) => {
   try {
     const _user = req.user;
 
-    await User.findOneAndRemove({ _id: id });
     await Video.remove({ author: _user._id });
+    await User.findOneAndRemove({ _id: _user._id });
     return res.status(200).send({message: 'Account has been deleted successfully'})
   } catch (error) {
     next(error);
