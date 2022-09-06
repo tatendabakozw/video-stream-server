@@ -50,6 +50,8 @@ app.use('/api/chat', require('./routes/chat/chat'))
 app.use('/api/report', require('./routes/report/report'))
 app.use('/api/user', require('./routes/user/user'))
 app.use('/api/channel', require('./routes/channel/channel'))
+app.use('/api/admin', require('./routes/admin/admin'))
+
 
 //not found handler
 app.use((req, res, next) => {
