@@ -1,4 +1,5 @@
 const express = require('express')
+const { getAllUsers } = require('../../controllers/adminController')
 const Report = require('../../models/Report')
 const User = require('../../models/User')
 const Video = require('../../models/Video')
@@ -20,5 +21,7 @@ router.get('/info', async(req,res, next)=>{
         next(error)
     }
 })
+
+router.get('/users', getAllUsers)
 
 module.exports = router

@@ -42,7 +42,7 @@ const videoSchema = new mongoose.Schema(
     },
     status:{
       type: String,
-      enum:['public', 'private'],
+      enum:['public', 'private', 'blocked'],
       default: 'public'
     },
     duration:{
