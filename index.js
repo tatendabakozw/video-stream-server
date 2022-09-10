@@ -51,6 +51,7 @@ app.use('/api/report', require('./routes/report/report'))
 app.use('/api/user', require('./routes/user/user'))
 app.use('/api/channel', require('./routes/channel/channel'))
 app.use('/api/admin', require('./routes/admin/admin'))
+app.use('/api/admin', require('./routes/admin/login'))
 
 
 //not found handler
