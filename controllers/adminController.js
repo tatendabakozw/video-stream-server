@@ -64,8 +64,8 @@ exports.adminLogin = async (req, res) => {
   if (!_user) {
     return res.status(404).send({ message: "Account does not exist!" });
   } else {
-    if (!_user.emailApproved) {
-      return res.status(403).send({ message: "Verify your email in database" });
+    if (!_user.role === 'admin') {
+      return res.status(403).send({ message: "Only admins allowed" });
     }
 
     // decrypt password value from database

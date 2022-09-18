@@ -237,3 +237,16 @@ exports.deleteAVideo = async (req, res) => {
     return res.status(500).send({ message: `${error}` });
   }
 };
+
+// block video 
+// /api/video/block/{videoId}
+// patch request
+exports.blockVideo = async () =>{
+  const {id} = req.params // id of the video
+  try {
+    await Video.findOneAndUpdate({ _id: id }, {status: 'blocked'});
+    return res.status(200).send({ message: "Video blocked successfully!" });
+  } catch (error) {
+    return res.status(500).send({ message: `${error}` });
+  }
+}

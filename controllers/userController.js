@@ -203,8 +203,6 @@ exports.getUserInfo = async (req, res) => {
     let total_videos = await Video.countDocuments({ author: user });
     let user_info = await User.findOne({ _id: user });
 
-    console.log(user_info)
-
     return res.status(200).send({
       subscribers: total_subscribers,
       videos: total_videos,

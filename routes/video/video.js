@@ -5,6 +5,7 @@ const {
   editAVideo,
   deleteAVideo,
   getSingleVideo,
+  blockVideo,
 } = require("../../controllers/videoController");
 const { requireUserSignIn } = require("../../middleware/auth");
 const router = express.Router();
@@ -33,5 +34,10 @@ router.put("/edit/:id",requireUserSignIn, editAVideo);
 // /api/post/video/delete/{videoId}
 // delete request
 router.delete("/delete/:id", deleteAVideo);
+
+// block a video
+// /api/post/video/block/{videoId}
+// patch request
+router.patch("/block/:id", blockVideo);
 
 module.exports = router;
