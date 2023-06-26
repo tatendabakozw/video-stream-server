@@ -1,13 +1,14 @@
 const express = require("express");
 const { requireUserSignIn } = require("../../middleware/auth");
 const Comment = require("../../models/Comment");
+const User = require("../../models/User");
 const Video = require("../../models/Video");
 const router = express.Router();
 
 // create a comment
 // /api/comment/create
 // post request
-router.post("/create", requireUserSignIn, async (req, res) => {
+router.post("/create", requireUserSignIn, async (req, res, next) => {
   const { videoId, comment } = req.body;
   const _user = req.user;
   try {
@@ -20,45 +21,31 @@ router.post("/create", requireUserSignIn, async (req, res) => {
       sentFromId: _user._id,
     });
     const saved_comment = await newComment.save();
-    await Video.findOneAndUpdate(
-      { _id: videoId },
-      { $inc: { 'numberOfComments': 1 } }
-    );
-    let query = [
-      {
-        $lookup: {
-          from: "users",
-          let: { user: "sentFromId" },
-          pipeline: [{ $limit: 1 }],
-          as: "creator",
-        },
+
+    const comment_user = await User.findOne({_id: saved_comment.sentFromId})
+
+    const comment_obj = {
+      comment: saved_comment.comment,
+      createdAt: saved_comment.createdAt,
+      creator:{
+        _id: comment_user._id,
+        email: comment_user.email,
+        photoURL: comment_user.photoURL,
+        username: comment_user.username,
       },
-      { $unwind: "$creator" },
-    ];
-    query.push({
-      $match: {
-        _id: saved_comment._id,
-      },
-    });
-    // exclude some fields
-    query.push({
-      //@ts-ignore
-      $project: {
-        "creator.password": 0,
-      },
-    });
-    const new_comment = await Comment.aggregate(query)
-    console.log(new_comment)
-    global.io.sockets.emit("comment", saved_comment);
+      videoId: saved_comment.videoId,
+      sentFromId: saved_comment.sentFromId
+    }
+    
     return res
       .status(200)
       .send({
         message: "Comment Saved",
-        comment: new_comment,
+        comment: comment_obj,
       });
 
   } catch (error) {
-    return res.status(500).send({ message: `${error}` });
+    next(error)
   }
 });
 
