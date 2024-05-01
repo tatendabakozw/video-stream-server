@@ -8,25 +8,24 @@ const connectDB = require("./utils/mongo");
 
 const PORT = process.env.PORT || 5500;
 
-const corsOptions ={
-  origin:'*', 
-  credentials:true,            //access-control-allow-credentials:true
-  optionSuccessStatus:200,
-}
+const corsOptions = {
+  origin: "*",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
 
-
-app.use(cors(corsOptions)) 
+app.use(cors(corsOptions));
 
 // a server for socket io
-var server = require('http').createServer(app);
+var server = require("http").createServer(app);
 const socketio = require("socket.io");
 const WebSockets = require("./helpers/WebSockets");
 global.io = socketio(server);
-global.io.on('connection', WebSockets.connection)
+global.io.on("connection", WebSockets.connection);
 
 // app level middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan("common"));
 app.use(helmet());
 
@@ -42,17 +41,16 @@ app.get("/", (req, res) => {
 
 // user defined routes
 app.use("/api/auth", require("./routes/auth/auth"));
-app.use('/api/video', require('./routes/video/video'))
-app.use('/api/comment', require('./routes/comment/comment'))
-app.use('/api/like', require('./routes/like/like'))
-app.use('/api/subscribe', require('./routes/subscriber/subscriber'))
-app.use('/api/chat', require('./routes/chat/chat'))
-app.use('/api/report', require('./routes/report/report'))
-app.use('/api/user', require('./routes/user/user'))
-app.use('/api/channel', require('./routes/channel/channel'))
-app.use('/api/admin', require('./routes/admin/admin'))
-app.use('/api/admin', require('./routes/admin/login'))
-
+app.use("/api/video", require("./routes/video/video"));
+app.use("/api/comment", require("./routes/comment/comment"));
+app.use("/api/like", require("./routes/like/like"));
+app.use("/api/subscribe", require("./routes/subscriber/subscriber"));
+app.use("/api/chat", require("./routes/chat/chat"));
+app.use("/api/report", require("./routes/report/report"));
+app.use("/api/user", require("./routes/user/user"));
+app.use("/api/channel", require("./routes/channel/channel"));
+app.use("/api/admin", require("./routes/admin/admin"));
+app.use("/api/admin", require("./routes/admin/login"));
 
 //not found handler
 app.use((req, res, next) => {
@@ -74,8 +72,6 @@ app.use((error, req, res, next) => {
         : error.stack,
   });
 });
-
-
 
 // listener
 server.listen(PORT, (err) => {
